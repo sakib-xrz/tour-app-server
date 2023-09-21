@@ -10,16 +10,16 @@ const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 );
 
-app.get('/api/v1/tours', (req, res) => {
+const getAllTours = (req, res) => {
   res.status(200).json({
     status: 'success',
     results: tours.length,
     message: 'Tours data retrieve successfully',
     data: tours,
   });
-});
+};
 
-app.get('/api/v1/tours/:id', (req, res) => {
+const getSingleTour = (req, res) => {
   const { id } = req.params;
   const tour = tours.find((data) => data.id === +id);
 
@@ -35,9 +35,9 @@ app.get('/api/v1/tours/:id', (req, res) => {
     message: 'Tour data retrieve successfully',
     data: tour,
   });
-});
+};
 
-app.post('/api/v1/tours', (req, res) => {
+const createTour = (req, res) => {
   const newTourData = req.body;
   const newTourId = tours[tours.length - 1].id + 1;
   const newTour = Object.assign({ id: newTourId }, newTourData);
@@ -53,9 +53,9 @@ app.post('/api/v1/tours', (req, res) => {
       });
     }
   );
-});
+};
 
-app.patch('/api/v1/tours/:id', (req, res) => {
+const updateTour = (req, res) => {
   if (req.params.id > tours.length - 1) {
     res.status(404).json({
       status: 'Failed',
@@ -68,9 +68,9 @@ app.patch('/api/v1/tours/:id', (req, res) => {
     message: 'Tour update successfully',
     data: '<Updated tour here...>',
   });
-});
+};
 
-app.delete('/api/v1/tours/:id', (req, res) => {
+const deleteTour = (req, res) => {
   if (req.params.id > tours.length - 1) {
     res.status(404).json({
       status: 'Failed',
@@ -83,7 +83,15 @@ app.delete('/api/v1/tours/:id', (req, res) => {
     message: 'Tour delete successfully',
     data: null,
   });
-});
+};
+
+app.route('/api/v1/tours').get(getAllTours).post(createTour);
+
+app
+  .route('/api/v1/tours/:id')
+  .get(getSingleTour)
+  .patch(updateTour)
+  .delete(deleteTour);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}...`);
