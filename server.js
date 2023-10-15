@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const mongoose = require('mongoose');
 require('dotenv').config();
 
@@ -18,17 +19,5 @@ async function main() {
     console.log('Failed to connect to the database', error);
   }
 }
-
-const tourSchema = mongoose.Schema({
-  name: {
-    type: String,
-    require: [true, 'Tour name cannot be empty'],
-    unique: true,
-  },
-  rating: { type: Number, require: true, default: 4.5 },
-  price: { type: Number, require: [true, 'Price cannot be empty'] },
-});
-
-const Tour = mongoose.model('Tour', tourSchema);
 
 main();
