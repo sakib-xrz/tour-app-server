@@ -11,13 +11,13 @@ async function main() {
   try {
     await mongoose.connect(uri);
     console.log('Database connection successful');
-
-    app.listen(port, () => {
-      console.log(`Application listening on port ${port}`);
-    });
   } catch (error) {
     console.log('Failed to connect to the database', error);
   }
 }
+
+app.listen(port, () => {
+  console.log(`Application listening on port ${port}`);
+});
 
 main();
