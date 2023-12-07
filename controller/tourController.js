@@ -1,6 +1,13 @@
 const Tour = require('../model/tourModel');
 const APIFeatures = require('../utils/apiFeature');
 
+exports.topFourTours = async (req, res, next) => {
+  req.query.limit = '4';
+  req.query.sort = '-ratingsAverage,price';
+  req.query.fields = '-description,-images,-startDates,-updatedAt';
+  next();
+};
+
 exports.getAllTours = async (req, res) => {
   try {
     // EXECUTE QUERY
